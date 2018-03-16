@@ -48,7 +48,7 @@ public class User extends AbstractEntity {
     }
 
     public void setEnabled(Boolean enabled) {
-//        this.enabled = enabled;
+        this.enabled = enabled;
     }
 
 }
