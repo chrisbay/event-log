@@ -15,6 +15,9 @@ public class User extends AbstractEntity {
     private String email;
 
     @NotNull
+    private String fullName;
+
+    @NotNull
     private String password;
     private Boolean enabled = true;
 
@@ -22,13 +25,22 @@ public class User extends AbstractEntity {
 
     public User() {}
 
-    public User(String email, String password) {
+    public User(String fullName, String email, String password) {
+        this.fullName = fullName;
         this.email = email;
         this.password = encoder.encode(password);
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public Boolean isEnabled() {

@@ -7,7 +7,12 @@
 
 <h1 th:text="${title}"></h1>
 
-<form method="post" th:action="@{/register}" th:object="${registerForm}" style="width:600px;">
+<form method="post" th:action="@{/register}" th:object="${registerForm}">
+    <div class="form-group">
+        <label th:for="fullName">Full Name</label>
+        <input class="form-control" th:field="*{fullName}" />
+        <div class="error" th:errors="*{fullName}"></div>
+    </div>
     <div class="form-group">
         <label th:for="email">Email</label>
         <input class="form-control" th:field="*{email}" />

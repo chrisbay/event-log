@@ -39,7 +39,7 @@ public class AuthenticationController extends AbstractBaseController {
             return "register";
         }
 
-        User newUser = new User(form.getEmail(), form.getPassword());
+        User newUser = new User(form.getFullName(), form.getEmail(), form.getPassword());
         userRepository.save(newUser);
 
         return "redirect:";

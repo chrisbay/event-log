@@ -44,13 +44,14 @@ public class AuthenticationControllerTests {
                 .build();
     }
 
+    private static final String testUserFullName = "New User";
     private static final String testUserEmail = "test@launchcode.org";
     private static final String testUserPassword = "learntocode";
     private static int testUserUid;
 
     @Before
     public void setUpCustomer() throws Exception {
-        User user = new User(testUserEmail, testUserPassword);
+        User user = new User(testUserFullName, testUserEmail, testUserPassword);
         userRepository.save(user);
     }
 
@@ -66,8 +67,8 @@ public class AuthenticationControllerTests {
     public void testCanRegister() throws Exception {
         String email = "newuser@domain.com";
         String password = "abc123";
-        mockMvc.perform(post("/register")
-                .with(csrf())
+        mockMvc.perform(post("/register").with(csrf())
+                .param("fullName", "New User")
                 .param("email", email)
                 .param("password", password)
                 .param("verifyPassword", password))
@@ -80,11 +81,34 @@ public class AuthenticationControllerTests {
     @Test
     public void testRegistrationFormChecksPasswords() throws Exception {
         mockMvc.perform(post("/register").with(csrf())
+                .param("fullName", "New User")
                 .param("email", "newuser@domain.com")
                 .param("password", "password")
                 .param("verifyPassword", "passord"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Passwords do not match")));
+    }
+
+    @Test
+    public void testRegistrationFormChecksEmailFormat() throws Exception {
+        mockMvc.perform(post("/register").with(csrf())
+                .param("fullName", "New User")
+                .param("email", "newuser")
+                .param("password", "password")
+                .param("verifyPassword", "password"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Invalid email address")));
+    }
+
+    @Test
+    public void testRegistrationFormValidatesFullName() throws Exception {
+        mockMvc.perform(post("/register").with(csrf())
+                .param("fullName", "a")
+                .param("email", "newuser")
+                .param("password", "password")
+                .param("verifyPassword", "password"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Full name must contain at least two characters")));
     }
 
 }
