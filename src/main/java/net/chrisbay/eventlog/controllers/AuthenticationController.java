@@ -44,18 +44,16 @@ public class AuthenticationController extends AbstractBaseController {
     }
 
     @GetMapping(value = "/login")
-    public String login(Principal user, Model model, String error, String logout) {
+    public String login(Model model, Principal user, String error, String logout) {
 
         if (user != null)
             return "redirect:/welcome";
 
         if (error != null)
-            model.addAttribute("errorMsg", "Your username and password are invalid.");
+            model.addAttribute(MESSAGE_KEY, "danger|Your username and password are invalid");
 
         if (logout != null)
-            model.addAttribute("msg", "You have been logged out successfully.");
-
-
+            model.addAttribute(MESSAGE_KEY, "info|You have logged out");
 
         return "login";
     }

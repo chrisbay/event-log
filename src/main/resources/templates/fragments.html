@@ -1,32 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:fragment="head">
-    <meta charset="UTF-8"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title th:text="${title}"></title>
 
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 
-<div th:fragment="navigation">
+<div th:fragment="header">
 
-    <div th:if="${user}">
-        <nav class="user-nav">
-            <form th:action="@{/logout}" method="post" name="logoutForm"></form>
-            <a href="#" onclick="document.logoutForm.submit()">Log Out</a>
-        </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" th:href="@{/}">Event Log</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <form th:action="@{/logout}" method="post" name="logoutForm"></form>
+                    <a href="#" onclick="document.logoutForm.submit()">Log Out</a>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('!isAuthenticated()')}">
+                    <a th:href="@{/register}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div th:if="${message != null}"
+             th:with="parts=${#strings.arraySplit(message, '|')}"
+             th:attr="class=${'alert alert-' + parts[0]}"
+             th:text="${parts[1]}"
+             role="alert">
+        </div>
     </div>
 
-    <div th:unless="${user}">
-         <nav>
-            <a th:href="@{/login}">Log In</a> |
-            <a th:href="@{/register}">Register</a>
-        </nav>
-    </div>
+</div>
 
+
+
+<div th:fragment="footer">
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </div>
 
 </body>

@@ -30,6 +30,7 @@ dependencies {
 	compile('org.webjars:bootstrap:4.0.0-2')
 	compile('org.webjars:webjars-locator:0.33')
 	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('mysql:mysql-connector-java')
 	testCompile('com.h2database:h2')
@@ -37,3 +38,6 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+bootRun {
+	sourceResources sourceSets.main
+}

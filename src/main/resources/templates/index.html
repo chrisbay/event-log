@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head">
-<body class="container">
+<body>
 
-<nav th:replace="fragments :: navigation"></nav>
+<div th:replace="fragments :: header"></div>
 
-<h1>Welcome, <span th:text="${user.fullName}"></span></h1>
+<div class="container-fluid">
+
+    <div class="row">
+
+    </div>
+</div>
+
+<div th:replace="fragments :: footer"></div>
 
 </body>
 </html>
