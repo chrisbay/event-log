@@ -157,4 +157,17 @@ public class AuthenticationControllerTests {
                 .andExpect(content().string(containsString(testUserFullName)));
     }
 
+    @Test
+    public void testCanLogOut() throws Exception {
+        mockMvc.perform(formLogin("/login")
+                .user("email", testUserEmail)
+                .password(testUserPassword));
+        mockMvc.perform(post("/logout").with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", "/login?logout"));
+        mockMvc.perform(get("/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", "http://localhost/login"));
+    }
+
 }

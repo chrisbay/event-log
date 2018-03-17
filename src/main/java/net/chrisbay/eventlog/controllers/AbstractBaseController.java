@@ -10,7 +10,7 @@ import java.security.Principal;
 /**
  * Created by Chris Bay
  */
-public class AbstractBaseController {
+public abstract class AbstractBaseController {
 
     @Autowired
     UserService userService;
