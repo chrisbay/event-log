@@ -151,6 +151,14 @@ public class AuthenticationControllerTests {
     }
 
     @Test
+    public void testRedirectsToWelcomeIfAlreadyLoggedIn() throws Exception {
+        mockMvc.perform(get("/login")
+                .with(user(testUserEmail)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", "/welcome"));
+    }
+
+    @Test
     public void testViewWelcomeMessageAfterLogIn() throws Exception {
         mockMvc.perform(get("/welcome")
                 .with(user(testUserEmail)))

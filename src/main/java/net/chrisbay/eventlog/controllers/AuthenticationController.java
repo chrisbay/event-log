@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * Created by Chris Bay
@@ -43,7 +44,10 @@ public class AuthenticationController extends AbstractBaseController {
     }
 
     @GetMapping(value = "/login")
-    public String login(Model model, String error, String logout) {
+    public String login(Principal user, Model model, String error, String logout) {
+
+        if (user != null)
+            return "redirect:/welcome";
 
         if (error != null)
             model.addAttribute("errorMsg", "Your username and password are invalid.");
@@ -51,7 +55,7 @@ public class AuthenticationController extends AbstractBaseController {
         if (logout != null)
             model.addAttribute("msg", "You have been logged out successfully.");
 
-        // TODO - Check to see if user is already logged in
+
 
         return "login";
     }
