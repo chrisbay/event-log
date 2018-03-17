@@ -1,8 +1,10 @@
 package net.chrisbay.eventlog.models;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -19,16 +21,16 @@ public class User extends AbstractEntity {
 
     @NotNull
     private String password;
-    private Boolean enabled = true;
 
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    @NotNull
+    private Boolean enabled = true;
 
     public User() {}
 
     public User(String fullName, String email, String password) {
         this.fullName = fullName;
         this.email = email;
-        this.password = encoder.encode(password);
+        this.password = password;
     }
 
     public String getEmail() {
@@ -41,6 +43,14 @@ public class User extends AbstractEntity {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Boolean isEnabled() {

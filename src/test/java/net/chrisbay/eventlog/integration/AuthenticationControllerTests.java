@@ -19,6 +19,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -47,10 +48,9 @@ public class AuthenticationControllerTests {
     private static final String testUserFullName = "New User";
     private static final String testUserEmail = "test@launchcode.org";
     private static final String testUserPassword = "learntocode";
-    private static int testUserUid;
 
     @Before
-    public void setUpCustomer() throws Exception {
+    public void setUpUser() throws Exception {
         User user = new User(testUserFullName, testUserEmail, testUserPassword);
         userRepository.save(user);
     }
@@ -73,7 +73,7 @@ public class AuthenticationControllerTests {
                 .param("password", password)
                 .param("verifyPassword", password))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(header().string("Location", ""));
+                .andExpect(header().string("Location", "/welcome"));
         User user = userRepository.findByEmail(email);
         assertEquals(user.getEmail(), email);
     }
@@ -109,6 +109,24 @@ public class AuthenticationControllerTests {
                 .param("verifyPassword", "password"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Full name must contain at least two characters")));
+    }
+
+    @Test
+    public void testCanViewLoginForm() throws Exception {
+        mockMvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Log In")))
+                .andExpect(content().string(containsString("<form")));
+    }
+
+    @Test
+    public void testCanLogIn() throws Exception {
+        mockMvc.perform(post("/login").with(csrf())
+                .param("password", testUserPassword)
+                .param("email", testUserEmail))
+                .andDo(print());
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(header().string("Location", "/welcome"));
     }
 
 }

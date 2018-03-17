@@ -2,7 +2,8 @@ package net.chrisbay.eventlog.controllers;
 
 import net.chrisbay.eventlog.forms.RegisterForm;
 import net.chrisbay.eventlog.models.User;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -17,6 +18,9 @@ import javax.validation.Valid;
  */
 @Controller
 public class AuthenticationController extends AbstractBaseController {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping(value = "/register")
     public String registerForm(Model model) {
@@ -35,14 +39,17 @@ public class AuthenticationController extends AbstractBaseController {
         User existingUser = userRepository.findByEmail(form.getEmail());
 
         if (existingUser != null) {
-            errors.rejectValue("username", "username.alreadyexists", "A user with that email already exists");
+            errors.rejectValue("email", "email.alreadyexists", "A user with that email already exists");
             return "register";
         }
 
-        User newUser = new User(form.getFullName(), form.getEmail(), form.getPassword());
+        User newUser = new User(
+                form.getFullName(),
+                form.getEmail(),
+                passwordEncoder.encode(form.getPassword()));
         userRepository.save(newUser);
 
-        return "redirect:";
+        return "redirect:/welcome";
     }
 
     @GetMapping(value = "/login")
