@@ -135,15 +135,14 @@ public class AuthenticationControllerTests {
     public void testCanLogIn() throws Exception {
         mockMvc.perform(formLogin("/login")
                 .user("email", testUserEmail)
-                .password(testUserPassword))
-                .andDo(print())
+                .password(testUserPassword)) 
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/welcome"));
     }
 
     @Test
     public void testViewWelcomeMessageAfterLogIn() throws Exception {
-        mockMvc.perform(post("/welcome")
+        mockMvc.perform(get("/welcome")
                 .with(user(testUserEmail)))
                 .andExpect(content().string(containsString(testUserFullName)));
     }
