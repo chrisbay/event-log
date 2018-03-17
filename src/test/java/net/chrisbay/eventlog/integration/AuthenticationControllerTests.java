@@ -1,12 +1,14 @@
 package net.chrisbay.eventlog.integration;
 
-import net.chrisbay.eventlog.data.UserRepository;
 import net.chrisbay.eventlog.integration.config.IntegrationTestConfig;
 import net.chrisbay.eventlog.models.User;
+import net.chrisbay.eventlog.user.UserDto;
+import net.chrisbay.eventlog.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,8 +17,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,10 +34,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration
 public class AuthenticationControllerTests {
 
-    @Autowired private UserRepository userRepository;
-
     @Autowired
     private WebApplicationContext context;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserService userService;
 
     private MockMvc mockMvc;
 
@@ -51,8 +59,12 @@ public class AuthenticationControllerTests {
 
     @Before
     public void setUpUser() throws Exception {
-        User user = new User(testUserFullName, testUserEmail, testUserPassword);
-        userRepository.save(user);
+        UserDto userDto = new UserDto();
+        userDto.setEmail(testUserEmail);
+        userDto.setFullName(testUserFullName);
+        userDto.setPassword(testUserPassword);
+        userDto.setVerifyPassword(testUserPassword);
+        userService.save(userDto);
     }
 
     @Test
@@ -74,7 +86,7 @@ public class AuthenticationControllerTests {
                 .param("verifyPassword", password))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/welcome"));
-        User user = userRepository.findByEmail(email);
+        User user = userService.findByEmail(email);
         assertEquals(user.getEmail(), email);
     }
 
@@ -121,12 +133,19 @@ public class AuthenticationControllerTests {
 
     @Test
     public void testCanLogIn() throws Exception {
-        mockMvc.perform(post("/login").with(csrf())
-                .param("password", testUserPassword)
-                .param("email", testUserEmail))
-                .andDo(print());
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(header().string("Location", "/welcome"));
+        mockMvc.perform(formLogin("/login")
+                .user("email", testUserEmail)
+                .password(testUserPassword))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", "/welcome"));
+    }
+
+    @Test
+    public void testViewWelcomeMessageAfterLogIn() throws Exception {
+        mockMvc.perform(post("/welcome")
+                .with(user(testUserEmail)))
+                .andExpect(content().string(containsString(testUserFullName)));
     }
 
 }

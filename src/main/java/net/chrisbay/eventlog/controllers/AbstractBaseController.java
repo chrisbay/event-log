@@ -1,7 +1,7 @@
 package net.chrisbay.eventlog.controllers;
 
-import net.chrisbay.eventlog.data.UserRepository;
 import net.chrisbay.eventlog.models.User;
+import net.chrisbay.eventlog.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -13,12 +13,12 @@ import java.security.Principal;
 public class AbstractBaseController {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @ModelAttribute("user")
     public User getLoggedInUser(Principal user) {
         if (user != null)
-            return userRepository.findByEmail(user.getName());
+            return userService.findByEmail(user.getName());
         return null;
     }
 

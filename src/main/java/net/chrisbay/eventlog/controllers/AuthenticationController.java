@@ -1,9 +1,9 @@
 package net.chrisbay.eventlog.controllers;
 
-import net.chrisbay.eventlog.forms.RegisterForm;
-import net.chrisbay.eventlog.models.User;
+import net.chrisbay.eventlog.user.EmailExistsException;
+import net.chrisbay.eventlog.user.UserDto;
+import net.chrisbay.eventlog.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -19,35 +19,25 @@ import javax.validation.Valid;
 @Controller
 public class AuthenticationController extends AbstractBaseController {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @GetMapping(value = "/register")
     public String registerForm(Model model) {
-        model.addAttribute(new RegisterForm());
+        model.addAttribute(new UserDto());
         model.addAttribute("title", "Register");
         return "register";
     }
 
     @PostMapping(value = "/register")
-    public String register(@ModelAttribute @Valid RegisterForm form, Errors errors) {
+    public String register(@ModelAttribute @Valid UserDto userDto, Errors errors) {
 
-        if (errors.hasErrors()) {
+        if (errors.hasErrors())
             return "register";
-        }
 
-        User existingUser = userRepository.findByEmail(form.getEmail());
-
-        if (existingUser != null) {
+        try {
+            userService.save(userDto);
+        } catch (EmailExistsException e) {
             errors.rejectValue("email", "email.alreadyexists", "A user with that email already exists");
             return "register";
         }
-
-        User newUser = new User(
-                form.getFullName(),
-                form.getEmail(),
-                passwordEncoder.encode(form.getPassword()));
-        userRepository.save(newUser);
 
         return "redirect:/welcome";
     }
