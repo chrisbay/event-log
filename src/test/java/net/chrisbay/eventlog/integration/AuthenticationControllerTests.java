@@ -23,7 +23,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -113,6 +112,17 @@ public class AuthenticationControllerTests {
     }
 
     @Test
+    public void testRegistrationFormChecksForExistingEmail() throws Exception {
+        mockMvc.perform(post("/register").with(csrf())
+                .param("fullName", testUserFullName)
+                .param("email", testUserEmail)
+                .param("password", testUserPassword)
+                .param("verifyPassword", testUserPassword))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(testUserEmail + " already exists")));
+    }
+
+    @Test
     public void testRegistrationFormValidatesFullName() throws Exception {
         mockMvc.perform(post("/register").with(csrf())
                 .param("fullName", "a")
@@ -135,7 +145,7 @@ public class AuthenticationControllerTests {
     public void testCanLogIn() throws Exception {
         mockMvc.perform(formLogin("/login")
                 .user("email", testUserEmail)
-                .password(testUserPassword)) 
+                .password(testUserPassword))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/welcome"));
     }

@@ -35,7 +35,7 @@ public class AuthenticationController extends AbstractBaseController {
         try {
             userService.save(userDto);
         } catch (EmailExistsException e) {
-            errors.rejectValue("email", "email.alreadyexists", "A user with that email already exists");
+            errors.rejectValue("email", "email.alreadyexists", e.getMessage());
             return "register";
         }
 

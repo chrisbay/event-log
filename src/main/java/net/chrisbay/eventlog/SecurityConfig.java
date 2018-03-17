@@ -1,6 +1,5 @@
 package net.chrisbay.eventlog;
 
-import net.chrisbay.eventlog.user.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
