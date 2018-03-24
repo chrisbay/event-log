@@ -1,13 +1,10 @@
 package net.chrisbay.eventlog.models;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import javax.persistence.Entity;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Chris Bay
@@ -81,9 +78,20 @@ public class User extends AbstractEntity {
             return false;
         }
         final User user = (User) obj;
-        if (!email.equals(user.email)) {
-            return false;
-        }
-        return true;
+        return email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getEmail());
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", fullName='" + fullName + '\'' +
+                '}';
     }
 }
