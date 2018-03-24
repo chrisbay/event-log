@@ -1,5 +1,6 @@
 package net.chrisbay.eventlog.user;
 
+import net.chrisbay.eventlog.forms.UserForm;
 import net.chrisbay.eventlog.models.User;
 
 /**
@@ -7,7 +8,7 @@ import net.chrisbay.eventlog.models.User;
  */
 public interface UserService {
 
-    public User save(UserDto userDto) throws EmailExistsException;
+    public User save(UserForm userForm) throws EmailExistsException;
     public User findByEmail(String email);
 
 }

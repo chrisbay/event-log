@@ -2,7 +2,7 @@ package net.chrisbay.eventlog.functional;
 
 import net.chrisbay.eventlog.functional.config.FunctionalTestConfig;
 import net.chrisbay.eventlog.models.User;
-import net.chrisbay.eventlog.user.UserDto;
+import net.chrisbay.eventlog.forms.UserForm;
 import net.chrisbay.eventlog.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class AuthenticationControllerTests {
     private MockMvc mockMvc;
 
     @Before
-    public void setup() {
+    public void setupMockMvc() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(springSecurity())
@@ -58,12 +58,12 @@ public class AuthenticationControllerTests {
 
     @Before
     public void setUpUser() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setEmail(testUserEmail);
-        userDto.setFullName(testUserFullName);
-        userDto.setPassword(testUserPassword);
-        userDto.setVerifyPassword(testUserPassword);
-        userService.save(userDto);
+        UserForm userForm = new UserForm();
+        userForm.setEmail(testUserEmail);
+        userForm.setFullName(testUserFullName);
+        userForm.setPassword(testUserPassword);
+        userForm.setVerifyPassword(testUserPassword);
+        userService.save(userForm);
     }
 
     @Test

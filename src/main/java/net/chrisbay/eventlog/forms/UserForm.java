@@ -1,4 +1,4 @@
-package net.chrisbay.eventlog.user;
+package net.chrisbay.eventlog.forms;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 /**
  * Created by Chris Bay
  */
-public class UserDto {
+public class UserForm {
 
     @NotNull
     @Email(message = "Invalid email address")
@@ -24,7 +24,7 @@ public class UserDto {
     @NotNull(message = "Passwords do not match")
     private String verifyPassword;
 
-    public UserDto() {}
+    public UserForm() {}
 
     public String getEmail() {
         return email;

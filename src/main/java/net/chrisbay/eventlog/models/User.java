@@ -1,10 +1,13 @@
 package net.chrisbay.eventlog.models;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Chris Bay
@@ -12,13 +15,13 @@ import java.util.Objects;
 @Entity
 public class User extends AbstractEntity {
 
-    @NotNull
+    @NotBlank
     private String email;
 
-    @NotNull
+    @NotBlank
     private String fullName;
 
-    @NotNull
+    @NotBlank
     private String password;
 
     @NotNull
@@ -26,9 +29,19 @@ public class User extends AbstractEntity {
 
     public User() {}
 
-    public User(String fullName, String email, String password) {
-        this.fullName = fullName;
+    public User(@NotBlank String email, @NotBlank String fullName, @NotBlank String password) {
+
+        if (email == null || email.length() == 0 || !isValidEmail(email))
+            throw new IllegalArgumentException("Email may not be blank");
+
+        if (fullName == null || fullName.length() == 0)
+            throw new IllegalArgumentException("fullName may not be blank");
+
+        if (password == null || password.length() == 0)
+            throw new IllegalArgumentException("Password may not be blank");
+
         this.email = email;
+        this.fullName = fullName;
         this.password = password;
     }
 
@@ -83,7 +96,6 @@ public class User extends AbstractEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getEmail());
     }
 
@@ -93,5 +105,11 @@ public class User extends AbstractEntity {
                 "email='" + email + '\'' +
                 ", fullName='" + fullName + '\'' +
                 '}';
+    }
+
+    private static boolean isValidEmail(String email) {
+        Pattern pattern = Pattern.compile("\\S+@\\S+");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

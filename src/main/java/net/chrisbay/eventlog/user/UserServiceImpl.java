@@ -1,5 +1,6 @@
 package net.chrisbay.eventlog.user;
 
+import net.chrisbay.eventlog.forms.UserForm;
 import net.chrisbay.eventlog.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,17 +22,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User save(UserDto userDto) throws EmailExistsException {
+    public User save(UserForm userForm) throws EmailExistsException {
 
-        User existingUser = userRepository.findByEmail(userDto.getEmail());
+        User existingUser = userRepository.findByEmail(userForm.getEmail());
         if (existingUser != null)
             throw new EmailExistsException("The email address "
-                    + userDto.getEmail() + " already exists in the system");
+                    + userForm.getEmail() + " already exists in the system");
 
         User newUser = new User(
-                userDto.getFullName(),
-                userDto.getEmail(),
-                passwordEncoder.encode(userDto.getPassword()));
+                userForm.getEmail(),
+                userForm.getFullName(),
+                passwordEncoder.encode(userForm.getPassword()));
         userRepository.save(newUser);
 
         return newUser;

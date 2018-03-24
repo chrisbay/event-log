@@ -1,9 +1,7 @@
 package net.chrisbay.eventlog.controllers;
 
 import net.chrisbay.eventlog.user.EmailExistsException;
-import net.chrisbay.eventlog.user.UserDto;
-import net.chrisbay.eventlog.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.chrisbay.eventlog.forms.UserForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -22,19 +20,19 @@ public class AuthenticationController extends AbstractBaseController {
 
     @GetMapping(value = "/register")
     public String registerForm(Model model) {
-        model.addAttribute(new UserDto());
+        model.addAttribute(new UserForm());
         model.addAttribute("title", "Register");
         return "register";
     }
 
     @PostMapping(value = "/register")
-    public String register(@ModelAttribute @Valid UserDto userDto, Errors errors) {
+    public String register(@ModelAttribute @Valid UserForm userForm, Errors errors) {
 
         if (errors.hasErrors())
             return "register";
 
         try {
-            userService.save(userDto);
+            userService.save(userForm);
         } catch (EmailExistsException e) {
             errors.rejectValue("email", "email.alreadyexists", e.getMessage());
             return "register";
