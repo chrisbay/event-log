@@ -1,6 +1,6 @@
-package net.chrisbay.eventlog.integration;
+package net.chrisbay.eventlog.functional;
 
-import net.chrisbay.eventlog.integration.config.IntegrationTestConfig;
+import net.chrisbay.eventlog.functional.config.FunctionalTestConfig;
 import net.chrisbay.eventlog.models.User;
 import net.chrisbay.eventlog.user.UserDto;
 import net.chrisbay.eventlog.user.UserService;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by Chris Bay
  */
 @RunWith(SpringRunner.class)
-@IntegrationTestConfig
+@FunctionalTestConfig
 @ContextConfiguration
 public class AuthenticationControllerTests {
 

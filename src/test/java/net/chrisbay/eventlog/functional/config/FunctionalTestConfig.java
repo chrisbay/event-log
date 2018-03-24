@@ -1,4 +1,4 @@
-package net.chrisbay.eventlog.integration.config;
+package net.chrisbay.eventlog.functional.config;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -17,4 +17,4 @@ import java.lang.annotation.Target;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Transactional
 @SpringBootTest
-public @interface IntegrationTestConfig { }
+public @interface FunctionalTestConfig { }
