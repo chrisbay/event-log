@@ -12,27 +12,22 @@ public class TestEvent {
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateEventCatchesNullTitle() {
-        new Event(null, "", 1, new Date(), "");
+        new Event(null, "", new Date(), "");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateEventCatchesEmptyTitle() {
-        new Event("", "", 1, new Date(), "");
+        new Event("", "", new Date(), "");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateEventCatchesNullDescription() {
-        new Event("Title", null, 1, new Date(), "");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateEventCatchesNonpositiveDuration() {
-        new Event("Title", "", 0, new Date(), "");
+        new Event("Title", null, new Date(), "");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateEventCatchesNullDate() {
-        new Event("Title", "", 1, null, "");
+        new Event("Title", "", null, "");
     }
 
 }

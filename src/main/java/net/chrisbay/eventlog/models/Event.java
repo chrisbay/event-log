@@ -17,16 +17,17 @@ public class Event extends AbstractEntity {
     @NotNull
     private String description;
 
-    private int duration;
-
     @NotNull
-    private Date date;
+    private Date startDate;
 
     private String location;
 
     public Event() {}
 
-    public Event(@NotBlank String title, @NotNull String description, int duration, @NotNull Date date, String location) {
+    public Event(@NotBlank String title,
+                 @NotNull String description,
+                 @NotNull Date startDate,
+                 String location) {
 
         if (title == null || title.length() == 0)
             throw new IllegalArgumentException("Title may not be blank");
@@ -34,16 +35,12 @@ public class Event extends AbstractEntity {
         if (description == null)
             throw new IllegalArgumentException("Description may not be null");
 
-        if (duration <= 0)
-            throw new IllegalArgumentException("Duration must be greater than 0");
-
-        if (date == null)
-            throw new IllegalArgumentException("Date may not be null");
+        if (startDate == null)
+            throw new IllegalArgumentException("Start date may not be null");
 
         this.title = title;
         this.description = description;
-        this.duration = duration;
-        this.date = date;
+        this.startDate = startDate;
         this.location = location;
     }
 
@@ -63,20 +60,12 @@ public class Event extends AbstractEntity {
         this.description = description;
     }
 
-    public int getDuration() {
-        return duration;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public String getLocation() {
@@ -91,7 +80,7 @@ public class Event extends AbstractEntity {
     public String toString() {
         return "Event{" +
                 "title='" + title + '\'' +
-                ", date=" + date +
+                ", startDate=" + startDate +
                 '}';
     }
 }
