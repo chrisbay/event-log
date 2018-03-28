@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:fragment="head">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <title th:text="${title}"></title>
 
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/jquery-ui.min.css"/>
 </head>
 <body>
 
@@ -46,6 +47,7 @@
 
 <div th:fragment="footer">
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </div>
 

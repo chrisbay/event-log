@@ -2,6 +2,7 @@ package net.chrisbay.eventlog.user;
 
 import net.chrisbay.eventlog.forms.UserForm;
 import net.chrisbay.eventlog.models.User;
+import net.chrisbay.eventlog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

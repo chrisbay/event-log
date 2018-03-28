@@ -2,18 +2,12 @@ package net.chrisbay.eventlog.functional;
 
 import net.chrisbay.eventlog.functional.config.FunctionalTestConfig;
 import net.chrisbay.eventlog.models.User;
-import net.chrisbay.eventlog.forms.UserForm;
-import net.chrisbay.eventlog.user.UserService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
@@ -31,40 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @FunctionalTestConfig
 @ContextConfiguration
-public class AuthenticationControllerTests {
-
-    @Autowired
-    private WebApplicationContext context;
+public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserService userService;
-
-    private MockMvc mockMvc;
-
-    @Before
-    public void setupMockMvc() {
-        mockMvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
-    }
-
-    private static final String testUserFullName = "New User";
-    private static final String testUserEmail = "test@launchcode.org";
-    private static final String testUserPassword = "learntocode";
-
-    @Before
-    public void setUpUser() throws Exception {
-        UserForm userForm = new UserForm();
-        userForm.setEmail(testUserEmail);
-        userForm.setFullName(testUserFullName);
-        userForm.setPassword(testUserPassword);
-        userForm.setVerifyPassword(testUserPassword);
-        userService.save(userForm);
-    }
 
     @Test
     public void testCanViewRegistrationForm() throws Exception {
@@ -114,12 +78,12 @@ public class AuthenticationControllerTests {
     @Test
     public void testRegistrationFormChecksForExistingEmail() throws Exception {
         mockMvc.perform(post("/register").with(csrf())
-                .param("fullName", testUserFullName)
-                .param("email", testUserEmail)
-                .param("password", testUserPassword)
-                .param("verifyPassword", testUserPassword))
+                .param("fullName", TEST_USER_FULL_NAME)
+                .param("email", TEST_USER_EMAIL)
+                .param("password", TEST_USER_PASSWORD)
+                .param("verifyPassword", TEST_USER_PASSWORD))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(testUserEmail + " already exists")));
+                .andExpect(content().string(containsString(TEST_USER_EMAIL + " already exists")));
     }
 
     @Test
@@ -144,8 +108,8 @@ public class AuthenticationControllerTests {
     @Test
     public void testCanLogIn() throws Exception {
         mockMvc.perform(formLogin("/login")
-                .user("email", testUserEmail)
-                .password(testUserPassword))
+                .user("email", TEST_USER_EMAIL)
+                .password(TEST_USER_PASSWORD))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/welcome"));
     }
@@ -153,7 +117,7 @@ public class AuthenticationControllerTests {
     @Test
     public void testRedirectsToWelcomeIfAlreadyLoggedIn() throws Exception {
         mockMvc.perform(get("/login")
-                .with(user(testUserEmail)))
+                .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/welcome"));
     }
@@ -161,15 +125,15 @@ public class AuthenticationControllerTests {
     @Test
     public void testViewWelcomeMessageAfterLogIn() throws Exception {
         mockMvc.perform(get("/welcome")
-                .with(user(testUserEmail)))
-                .andExpect(content().string(containsString(testUserFullName)));
+                .with(user(TEST_USER_EMAIL)))
+                .andExpect(content().string(containsString(TEST_USER_FULL_NAME)));
     }
 
     @Test
     public void testCanLogOut() throws Exception {
         mockMvc.perform(formLogin("/login")
-                .user("email", testUserEmail)
-                .password(testUserPassword));
+                .user("email", TEST_USER_EMAIL)
+                .password(TEST_USER_PASSWORD));
         mockMvc.perform(post("/logout").with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/login?logout"));
