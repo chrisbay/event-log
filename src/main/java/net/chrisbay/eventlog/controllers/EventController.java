@@ -35,7 +35,7 @@ public class EventController {
 
         eventRepository.save(event);
 
-        return "redirect:" + event.getUid();
+        return "redirect:/events/" + event.getUid();
     }
 
     @GetMapping(value = "{id}")

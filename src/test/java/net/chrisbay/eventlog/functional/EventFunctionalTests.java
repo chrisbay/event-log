@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -33,21 +34,23 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Create Event")))
                 .andExpect(content().string(containsString("<form")))
-                .andExpect(xpath("//input[@name='title']").exists())
-                .andExpect(xpath("//input[@name='startDate']").exists())
-                .andExpect(xpath("//textarea[@name='description']").exists())
-                .andExpect(xpath("//input[@name='location']").exists());
+                .andExpect(xpath("//form//input[@name='title']").exists())
+                .andExpect(xpath("//form//input[@name='startDate']").exists())
+                .andExpect(xpath("//form//textarea[@name='description']").exists())
+                .andExpect(xpath("//form//input[@name='location']").exists());
     }
 
     @Test
     public void testCanCreateEvent() throws Exception {
-        long numEvents = eventRepository.count();
-        mockMvc.perform(post("/events/create").with(csrf())
+        mockMvc.perform(post("/events/create")
+                .with(user(TEST_USER_EMAIL))
+                .with(csrf())
                 .param("title", "Test Event")
                 .param("description", "This event will be great!")
-                .param("date", "")
+                .param("startDate", "11/11/11")
                 .param("location", ""))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/events/*"));
     }
 
 }
