@@ -34,8 +34,10 @@ public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
     public void testCanViewRegistrationForm() throws Exception {
         mockMvc.perform(get("/register"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Register")))
-                .andExpect(content().string(containsString("<form")));
+                .andExpect(xpath("//form//input[@name='fullName']").exists())
+                .andExpect(xpath("//form//input[@name='email']").exists())
+                .andExpect(xpath("//form//input[@name='password']").exists())
+                .andExpect(xpath("//form//input[@name='verifyPassword']").exists());
     }
 
     @Test
@@ -61,7 +63,7 @@ public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
                 .param("password", "password")
                 .param("verifyPassword", "passord"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Passwords do not match")));
+                .andExpect(model().attributeHasFieldErrors("userForm", "verifyPassword"));
     }
 
     @Test
@@ -72,7 +74,7 @@ public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
                 .param("password", "password")
                 .param("verifyPassword", "password"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Invalid email address")));
+                .andExpect(model().attributeHasFieldErrors("userForm", "email"));
     }
 
     @Test
@@ -83,7 +85,7 @@ public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
                 .param("password", TEST_USER_PASSWORD)
                 .param("verifyPassword", TEST_USER_PASSWORD))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(TEST_USER_EMAIL + " already exists")));
+                .andExpect(model().attributeHasFieldErrors("userForm", "email"));
     }
 
     @Test
@@ -94,15 +96,16 @@ public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
                 .param("password", "password")
                 .param("verifyPassword", "password"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Full name must contain at least two characters")));
+                .andExpect(model().attributeHasFieldErrors("userForm", "fullName"));;
     }
 
     @Test
     public void testCanViewLoginForm() throws Exception {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Log In")))
-                .andExpect(content().string(containsString("<form")));
+                .andExpect(xpath("//form//input[@name='email']").exists())
+                .andExpect(xpath("//form//input[@name='password']").exists())
+                .andExpect(xpath("//form//input[@name='remember-me']").exists());
     }
 
     @Test
