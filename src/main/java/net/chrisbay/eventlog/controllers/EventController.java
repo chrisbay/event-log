@@ -38,10 +38,10 @@ public class EventController {
         return "redirect:/events/" + event.getUid();
     }
 
-    @GetMapping(value = "{id}")
-    public String displayEventDetails(@PathVariable int id, Model model) {
+    @GetMapping(value = "{uid}")
+    public String displayEventDetails(@PathVariable int uid, Model model) {
 
-        Event event = eventRepository.findById(id).get();
+        Event event = eventRepository.findById(uid).get();
 
         model.addAttribute("title", "Event Details");
         model.addAttribute(event);
