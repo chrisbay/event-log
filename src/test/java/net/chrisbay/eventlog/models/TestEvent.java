@@ -26,6 +26,11 @@ public class TestEvent {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testCreateEventCatchesBlankDescription() {
+        new Event("Title", "", new Date(), "");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testCreateEventCatchesNullDate() {
         new Event("Title", "", null, "");
     }

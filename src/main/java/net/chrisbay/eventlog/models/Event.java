@@ -14,7 +14,7 @@ public class Event extends AbstractEntity {
     @NotBlank
     private String title;
 
-    @NotNull
+    @NotBlank
     private String description;
 
     @NotNull
@@ -32,7 +32,7 @@ public class Event extends AbstractEntity {
         if (title == null || title.length() == 0)
             throw new IllegalArgumentException("Title may not be blank");
 
-        if (description == null)
+        if (description == null || description.length() == 0)
             throw new IllegalArgumentException("Description may not be null");
 
         if (startDate == null)
