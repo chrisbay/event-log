@@ -50,7 +50,7 @@ public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
                 .param("password", password)
                 .param("verifyPassword", password))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(header().string("Location", "/welcome"));
+                .andExpect(header().string("Location", "/"));
         User user = userService.findByEmail(email);
         assertEquals(user.getEmail(), email);
     }
@@ -96,7 +96,7 @@ public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
                 .param("password", "password")
                 .param("verifyPassword", "password"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeHasFieldErrors("userForm", "fullName"));;
+                .andExpect(model().attributeHasFieldErrors("userForm", "fullName"));
     }
 
     @Test
@@ -114,22 +114,15 @@ public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
                 .user("email", TEST_USER_EMAIL)
                 .password(TEST_USER_PASSWORD))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(header().string("Location", "/welcome"));
+                .andExpect(header().string("Location", "/"));
     }
 
     @Test
-    public void testRedirectsToWelcomeIfAlreadyLoggedIn() throws Exception {
+    public void testRedirectsToRootIfAlreadyLoggedIn() throws Exception {
         mockMvc.perform(get("/login")
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(header().string("Location", "/welcome"));
-    }
-
-    @Test
-    public void testViewWelcomeMessageAfterLogIn() throws Exception {
-        mockMvc.perform(get("/welcome")
-                .with(user(TEST_USER_EMAIL)))
-                .andExpect(content().string(containsString(TEST_USER_FULL_NAME)));
+                .andExpect(header().string("Location", "/"));
     }
 
     @Test

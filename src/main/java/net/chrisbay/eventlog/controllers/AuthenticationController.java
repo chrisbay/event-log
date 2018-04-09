@@ -38,14 +38,14 @@ public class AuthenticationController extends AbstractBaseController {
             return "register";
         }
 
-        return "redirect:/welcome";
+        return "redirect:/";
     }
 
     @GetMapping(value = "/login")
     public String login(Model model, Principal user, String error, String logout) {
 
         if (user != null)
-            return "redirect:/welcome";
+            return "redirect:/";
 
         if (error != null)
             model.addAttribute(MESSAGE_KEY, "danger|Your username and password are invalid");
