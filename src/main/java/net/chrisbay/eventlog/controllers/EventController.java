@@ -20,6 +20,11 @@ public class EventController {
     @Autowired
     EventRepository eventRepository;
 
+    @RequestMapping(value = "/")
+    public String index() {
+        return "index";
+    }
+
     @GetMapping(value = "create")
     public String renderCreateEventForm(Model model) {
         model.addAttribute(new Event());
