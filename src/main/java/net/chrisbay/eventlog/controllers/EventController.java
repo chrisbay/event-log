@@ -54,7 +54,7 @@ public class EventController extends AbstractBaseController {
 
         Optional<Event> event = eventRepository.findById(uid);
         if (event.isPresent()) {
-            model.addAttribute(event);
+            model.addAttribute(event.get());
         } else {
             model.addAttribute(MESSAGE_KEY, "danger|No event found with id: " + Integer.toString(uid));
         }
