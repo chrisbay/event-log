@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+<body>
+
+<div th:replace="fragments :: header"></div>
+
+<div class="container-fluid">
+
+    <table class="table table-hover album-table">
+        <thead class="thead-default">
+        <tr>
+            <th>Date</th>
+            <th>Event</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${events}">
+            <td th:text="${event.startDate}"></td>
+            <td th:text="${event.title}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div th:replace="fragments :: footer"></div>
+
+</body>
+</html>

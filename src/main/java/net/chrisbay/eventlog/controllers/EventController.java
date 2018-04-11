@@ -9,6 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by Chris Bay
@@ -20,9 +21,11 @@ public class EventController {
     @Autowired
     EventRepository eventRepository;
 
-    @RequestMapping(value = "/")
-    public String index() {
-        return "index";
+    @GetMapping
+    public String listEvents(Model model) {
+        List<Event> allEvents = eventRepository.findAll();
+        model.addAttribute("events", allEvents);
+        return "events/list";
     }
 
     @GetMapping(value = "create")

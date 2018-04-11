@@ -40,6 +40,16 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
     }
 
     @Test
+    public void testIndexShowsRecentEvents() throws Exception {
+        Event event = createAndSaveEvent();
+        mockMvc.perform(get("/")
+                .with(user(TEST_USER_EMAIL)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(event.getTitle())))
+                .andExpect(content().string(containsString(event.getStartDate().toString())));
+    }
+
+    @Test
     public void testCanViewNewEventForm() throws Exception {
         mockMvc.perform(get("/events/create")
                 .with(user(TEST_USER_EMAIL)))
