@@ -27,9 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration
 public class AuthenticationFunctionalTests extends AbstractBaseFunctionalTest {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Test
     public void testCanViewRegistrationForm() throws Exception {
         mockMvc.perform(get("/register"))

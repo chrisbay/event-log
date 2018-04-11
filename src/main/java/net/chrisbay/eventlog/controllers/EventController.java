@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Chris Bay
  */
 @Controller
 @RequestMapping(value = "/events")
-public class EventController {
+public class EventController extends AbstractBaseController {
 
     @Autowired
     EventRepository eventRepository;
@@ -49,11 +50,17 @@ public class EventController {
     @GetMapping(value = "{uid}")
     public String displayEventDetails(@PathVariable int uid, Model model) {
 
-        Event event = eventRepository.findById(uid).get();
-
         model.addAttribute("title", "Event Details");
-        model.addAttribute(event);
+
+        Optional<Event> event = eventRepository.findById(uid);
+        if (event.isPresent()) {
+            model.addAttribute(event);
+        } else {
+            model.addAttribute(MESSAGE_KEY, "danger|No event found with id: " + Integer.toString(uid));
+        }
+
         return "events/details";
+
     }
 
 }

@@ -84,10 +84,18 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
                 event.getDescription()
         );
         mockMvc.perform(get("/events/{uid}", event.getUid())
-                .with(csrf())
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(stringContainsInOrder(eventFields)));
+    }
+
+    @Test
+    public void testDisplayErrorMessageOnInvalidEventId() throws Exception {
+        mockMvc.perform(get("/events/{uid}", -1)
+                .with(csrf())
+                .with(user(TEST_USER_EMAIL)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("No event found with id: -1")));
     }
 
     @Test
