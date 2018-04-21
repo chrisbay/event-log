@@ -9,7 +9,8 @@
     <div class="row justify-content-center">
         <div class="col-8 mt-4">
 
-            <form method="post" th:action="@{/events/create}" th:object="${event}">
+            <form id="eventForm" method="post" th:action="${actionUrl}" th:object="${event}">
+                <input type="hidden" th:field="*{uid}" />
                 <div class="form-group">
                     <label th:for="title">Title</label>
                     <input class="form-control" th:field="*{title}" required="required" />

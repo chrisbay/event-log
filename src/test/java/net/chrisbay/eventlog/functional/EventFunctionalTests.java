@@ -12,13 +12,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.text.StringContainsInOrder.stringContainsInOrder;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -53,8 +57,11 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
     public void testCanViewNewEventForm() throws Exception {
         mockMvc.perform(get("/events/create")
                 .with(user(TEST_USER_EMAIL)))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Create Event")))
+                .andExpect(xpath("//form[@id='eventForm']/@method").string("post"))
+                .andExpect(xpath("//form[@id='eventForm']/@action").string("/events/create"))
                 .andExpect(xpath("//form//input[@name='title']").exists())
                 .andExpect(xpath("//form//input[@name='startDate']").exists())
                 .andExpect(xpath("//form//textarea[@name='description']").exists())
@@ -83,7 +90,7 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
                 event.getLocation(),
                 event.getDescription()
         );
-        mockMvc.perform(get("/events/{uid}", event.getUid())
+        mockMvc.perform(get("/events/detail/{uid}", event.getUid())
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(stringContainsInOrder(eventFields)));
@@ -91,7 +98,7 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
 
     @Test
     public void testDisplayErrorMessageOnInvalidEventId() throws Exception {
-        mockMvc.perform(get("/events/{uid}", -1)
+        mockMvc.perform(get("/events/detail/{uid}", -1)
                 .with(csrf())
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().isOk())
@@ -132,6 +139,47 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
                 .param("startDate", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("event", "startDate"));
+    }
+
+    @Test
+    public void testCanViewUpdateEventForm() throws Exception {
+        Event event = createAndSaveEvent();
+        mockMvc.perform(get("/events/update/{uid}", event.getUid())
+                .with(user(TEST_USER_EMAIL)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Update Event")))
+                .andExpect(xpath("//form[@method='post' and @action='/events/update/%s']",
+                        event.getUid()).exists())
+                .andExpect(xpath("//form//input[@name='uid' and @value='%s']",
+                        event.getUid()).exists())
+                .andExpect(xpath("//form//input[@name='title' and @value='%s']",
+                        event.getTitle()).exists())
+                .andExpect(xpath("//form//input[@name='startDate' and @value='%s']",
+                        event.getFormattedStartDate()).exists())
+                .andExpect(xpath("//form//input[@name='location' and @value='%s']",
+                        event.getLocation()).exists())
+                .andExpect(xpath("//form//textarea[@name='description']")
+                        .string(event.getDescription()));
+    }
+
+    @Test
+    public void testCanUpdateEvent() throws Exception {
+        Event event = createAndSaveEvent();
+        String newTitle = event.getTitle() + "UPDATED";
+        mockMvc.perform(post("/events/update/{uid}", event.getUid())
+                .with(csrf())
+                .with(user(TEST_USER_EMAIL))
+                .param("uid", Integer.toString(event.getUid()))
+                .param("title", newTitle)
+                .param("description", event.getDescription())
+                .param("startDate", event.getFormattedStartDate())
+                .param("location", event.getLocation()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", "/events/detail/"+event.getUid()));
+        Optional<Event> updatedEventRes = eventRepository.findById(event.getUid());
+        assertTrue(updatedEventRes.isPresent());
+        Event updatedEvent = updatedEventRes.get();
+        assertEquals(newTitle, updatedEvent.getTitle());
     }
 
 }

@@ -19,6 +19,10 @@ public abstract class AbstractEntity {
         return this.uid;
     }
 
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

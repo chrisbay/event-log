@@ -1,8 +1,11 @@
 package net.chrisbay.eventlog.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -11,13 +14,18 @@ import java.util.Date;
 @Entity
 public class Event extends AbstractEntity {
 
+    private static final String START_DATE_FORMAT_PATTERN = "MM/dd/yyyy";
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT
+            = new SimpleDateFormat(START_DATE_FORMAT_PATTERN);
+
     @NotBlank
     private String title;
 
     @NotBlank
     private String description;
 
-    @NotNull
+    @NotNull(message = "Please enter a valid date")
+    @DateTimeFormat(pattern = START_DATE_FORMAT_PATTERN)
     private Date startDate;
 
     private String location;
@@ -66,6 +74,10 @@ public class Event extends AbstractEntity {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public String getFormattedStartDate() {
+        return Event.SIMPLE_DATE_FORMAT.format(startDate);
     }
 
     public String getLocation() {
