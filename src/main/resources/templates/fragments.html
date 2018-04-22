@@ -14,7 +14,6 @@
 <body>
 
 <header th:fragment="header">
-
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" th:href="@{/}">Event Log</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +41,9 @@
             </ul>
         </div>
     </nav>
+</header>
 
+<div th:fragment="messages" class="container-fluid">
     <div th:if="${message != null}"
          th:with="parts=${#strings.arraySplit(message, '|')}"
          th:attr="class=${'alert alert-dismissible alert-' + parts[0]}"
@@ -50,8 +51,7 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <div th:text="${parts[1]}"></div>
     </div>
-
-</header>
+</div>
 
 <div th:fragment="scripts">
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>

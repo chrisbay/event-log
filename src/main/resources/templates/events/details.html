@@ -5,6 +5,8 @@
 
 <div th:replace="fragments :: header"></div>
 
+<div th:replace="fragments :: messages"></div>
+
 <main th:if="${event}" class="container-fluid">
     <h1 th:text="${event.title}"></h1>
 

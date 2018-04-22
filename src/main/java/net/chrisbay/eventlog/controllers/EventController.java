@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -58,7 +59,7 @@ public class EventController extends AbstractBaseController {
         if (event.isPresent()) {
             model.addAttribute(event.get());
         } else {
-            model.addAttribute(MESSAGE_KEY, "danger|No event found with id: " + Integer.toString(uid));
+            model.addAttribute(MESSAGE_KEY, "warning|No event found with id: " + Integer.toString(uid));
         }
 
         return "events/details";
@@ -75,19 +76,20 @@ public class EventController extends AbstractBaseController {
         if (event.isPresent()) {
             model.addAttribute(event.get());
         } else {
-            model.addAttribute(MESSAGE_KEY, "danger|No event found with id: " + Integer.toString(uid));
+            model.addAttribute(MESSAGE_KEY, "warning|No event found with id: " + Integer.toString(uid));
         }
 
         return "events/create-or-update";
     }
 
     @PostMapping(value = "update/{uid}")
-    public String processUpdateEventForm(@Valid @ModelAttribute Event event, Errors errors) {
+    public String processUpdateEventForm(@Valid @ModelAttribute Event event, RedirectAttributes model, Errors errors) {
 
         if (errors.hasErrors())
             return "events/create-or-update";
 
         eventRepository.save(event);
+        model.addFlashAttribute(MESSAGE_KEY, "success|Updated event: " + event.getTitle());
 
         return "redirect:/events/detail/" + event.getUid();
     }

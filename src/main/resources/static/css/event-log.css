@@ -1,5 +1,7 @@
-main.container-fluid {
+header + .container-fluid {
   padding-top: -80px;
   margin-top: 80px;
+}
+main.container-fluid {
   padding-bottom: 1.5rem;
 }
