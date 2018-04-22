@@ -6,14 +6,14 @@
 
     <title th:text="${title}"></title>
 
-    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootswatch-lumen/4.0.0/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/jquery-ui/jquery-ui.min.css}"/>
 </head>
 <body>
 
 <div th:fragment="header">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" th:href="@{/}">Event Log</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,10 +23,10 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
                     <form th:action="@{/logout}" method="post" name="logoutForm"></form>
-                    <a href="#" onclick="document.logoutForm.submit()">Log Out</a>
+                    <a class="nav-link" href="#" onclick="document.logoutForm.submit()">Log Out</a>
                 </li>
                 <li class="nav-item" th:if="${#authorization.expression('!isAuthenticated()')}">
-                    <a th:href="@{/register}">Register</a>
+                    <a class="nav-link" th:href="@{/register}">Register</a>
                 </li>
             </ul>
         </div>
@@ -46,9 +46,9 @@
 
 
 <div th:fragment="footer">
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/jquery-ui/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </div>
 
 </body>

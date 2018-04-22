@@ -1,6 +1,7 @@
 buildscript {
 	ext {
 		springBootVersion = '2.0.0.RELEASE'
+		bootstrapVersion = '4.0.0'
 	}
 	repositories {
 		mavenCentral()
@@ -28,7 +29,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.webjars:jquery:3.3.1-1')
 	compile('org.webjars:jquery-ui:1.12.1')
-	compile('org.webjars:bootstrap:4.0.0-2')
+	compile("org.webjars:bootstrap:${bootstrapVersion}")
+	compile("org.webjars:bootswatch-lumen:${bootstrapVersion}")
 	compile('org.webjars:webjars-locator:0.33')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
