@@ -2,15 +2,12 @@ package net.chrisbay.eventlog.functional;
 
 import net.chrisbay.eventlog.functional.config.FunctionalTestConfig;
 import net.chrisbay.eventlog.models.Event;
-import net.chrisbay.eventlog.repositories.EventRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,21 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @FunctionalTestConfig
 @ContextConfiguration
-public class EventFunctionalTests extends AbstractBaseFunctionalTest {
-
-    @Autowired
-    EventRepository eventRepository;
-
-    private Event createAndSaveEvent() {
-        Date eventDate = new Date();
-        Event newEvent = new Event("The Title", "The Description", eventDate, "The Location");
-        eventRepository.save(newEvent);
-        return newEvent;
-    }
+public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
 
     @Test
     public void testIndexShowsRecentEvents() throws Exception {
-        Event event = createAndSaveEvent();
+        Event event = createAndSaveSingleEvent();
         mockMvc.perform(get("/")
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().isOk())
@@ -82,7 +69,7 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
 
     @Test
     public void testCanViewEventDetails() throws Exception {
-        Event event = createAndSaveEvent();
+        Event event = createAndSaveSingleEvent();
         List<String> eventFields = Arrays.asList(
                 event.getTitle(),
                 event.getStartDate().toString(),
@@ -142,7 +129,7 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
 
     @Test
     public void testCanViewUpdateEventForm() throws Exception {
-        Event event = createAndSaveEvent();
+        Event event = createAndSaveSingleEvent();
         mockMvc.perform(get("/events/update/{uid}", event.getUid())
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().isOk())
@@ -163,7 +150,7 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
 
     @Test
     public void testCanUpdateEvent() throws Exception {
-        Event event = createAndSaveEvent();
+        Event event = createAndSaveSingleEvent();
         String newTitle = event.getTitle() + "UPDATED";
         mockMvc.perform(post("/events/update/{uid}", event.getUid())
                 .with(csrf())
