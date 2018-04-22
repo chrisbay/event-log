@@ -8,7 +8,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
@@ -20,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration
 public class NavigationFunctionalTests extends AbstractBaseFunctionalTest {
 
-    private void navbarContainsNavItem(String text, String url) throws Exception {
+    private void testLoggedInNavbarContainsNavItem(String text, String url) throws Exception {
         mockMvc.perform(get("/")
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().isOk())
@@ -28,13 +27,30 @@ public class NavigationFunctionalTests extends AbstractBaseFunctionalTest {
                         .string(text));
     }
 
-    @Test
-    public void testNavbarLinksToMainEventListing() throws Exception {
-        navbarContainsNavItem("Events", "/");
+    private void testLoggedOutNavbarContainsNavItem(String text, String url) throws Exception {
+        mockMvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(xpath("//nav[contains(@class,'navbar')]//a[contains(@class,'nav-link') and @href='%s']", url)
+                        .string(text));
     }
 
     @Test
-    public void testNavbarLinksToCreateForm() throws Exception {
-        navbarContainsNavItem("Create", "/events/create");
+    public void testLoggedInNavbarLinksToMainEventListing() throws Exception {
+        testLoggedInNavbarContainsNavItem("Events", "/");
+    }
+
+    @Test
+    public void testLoggedInNavbarLinksToCreateForm() throws Exception {
+        testLoggedInNavbarContainsNavItem("Create", "/events/create");
+    }
+
+    @Test
+    public void testLoggedInNavbarLinksToLogout() throws Exception {
+        testLoggedInNavbarContainsNavItem("Log Out", "#");
+    }
+
+    @Test
+    public void testLoggedOutNavbarLinksToRegistration() throws Exception {
+        testLoggedOutNavbarContainsNavItem("Register", "/register");
     }
 }

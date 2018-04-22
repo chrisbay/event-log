@@ -20,7 +20,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto" th:if="${#authorization.expression('isAuthenticated()')}">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/}">Events</a>
             </li>
