@@ -72,7 +72,7 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
         Event event = createAndSaveSingleEvent();
         List<String> eventFields = Arrays.asList(
                 event.getTitle(),
-                event.getStartDate().toString(),
+                event.getFormattedStartDate(),
                 event.getLocation(),
                 event.getDescription()
         );
