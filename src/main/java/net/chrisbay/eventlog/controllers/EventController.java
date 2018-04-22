@@ -46,7 +46,7 @@ public class EventController extends AbstractBaseController {
 
         eventRepository.save(event);
 
-        return "redirect:/events/" + event.getUid();
+        return "redirect:/events/detail/" + event.getUid();
     }
 
     @GetMapping(value = "detail/{uid}")

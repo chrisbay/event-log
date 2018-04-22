@@ -13,23 +13,23 @@
                 <input type="hidden" th:field="*{uid}" />
                 <div class="form-group">
                     <label th:for="title">Title</label>
-                    <input class="form-control" th:field="*{title}" required="required" />
-                    <div class="error" th:errors="*{title}"></div>
+                    <input th:errorclass="is-invalid" class="form-control" th:field="*{title}" required="required" />
+                    <div class="invalid-feedback" th:errors="*{title}"></div>
                 </div>
                 <div class="form-group">
                     <label th:for="description">Date</label>
-                    <input id="datepicker" class="form-control" th:field="*{startDate}" required="required" />
-                    <div class="error" th:errors="*{startDate}"></div>
+                    <input id="datepicker" th:errorclass="is-invalid" class="form-control" th:field="*{startDate}" required="required" />
+                    <div class="invalid-feedback" th:errors="*{startDate}"></div>
                 </div>
                 <div class="form-group">
                     <label th:for="location">Location</label>
-                    <input  class="form-control" th:field="*{location}" required="required" />
-                    <div class="error" th:errors="*{location}"></div>
+                    <input th:errorclass="is-invalid" class="form-control" th:field="*{location}" />
+                    <div class="invalid-feedback" th:errors="*{location}"></div>
                 </div>
                 <div class="form-group">
                     <label th:for="description">Description</label>
-                    <textarea type="textarea" rows="3" class="form-control" th:field="*{description}" required="required"></textarea>
-                    <div class="error" th:errors="*{description}"></div>
+                    <textarea type="textarea" rows="3" th:errorclass="is-invalid" class="form-control" th:field="*{description}" required="required"></textarea>
+                    <div class="invalid-feedback" th:errors="*{description}"></div>
                 </div>
                 <input type="submit" value="Save" class="btn btn-primary" />
             </form>

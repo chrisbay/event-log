@@ -64,7 +64,7 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .param("startDate", "11/11/11")
                 .param("location", ""))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/events/*"));
+                .andExpect(redirectedUrlPattern("/events/detail/*"));
     }
 
     @Test

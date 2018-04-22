@@ -18,10 +18,10 @@ public class Event extends AbstractEntity {
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT
             = new SimpleDateFormat(START_DATE_FORMAT_PATTERN);
 
-    @NotBlank
+    @NotBlank(message = "Title is required")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Description is required")
     private String description;
 
     @NotNull(message = "Please enter a valid date")
