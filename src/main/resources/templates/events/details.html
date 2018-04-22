@@ -14,6 +14,10 @@
     </div>
 
     <p class="event-description" th:text="${event.description}"></p>
+
+    <div>
+        <a class="btn btn-primary" th:href="@{${'/events/update/'+event.uid}}">Edit</a>
+    </div>
 </div>
 
 <div th:replace="fragments :: footer"></div>

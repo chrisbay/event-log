@@ -128,6 +128,16 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
     }
 
     @Test
+    public void testEventDetailsPageDisplaysEditButton() throws Exception {
+        Event event = createAndSaveSingleEvent();
+        mockMvc.perform(get("/events/detail/{uid}", event.getUid())
+                .with(user(TEST_USER_EMAIL)))
+                .andExpect(status().isOk())
+                .andExpect(xpath("//a[contains(@class,'btn') and @href='/events/update/%s']", event.getUid())
+                        .string("Edit"));
+    }
+
+    @Test
     public void testCanViewUpdateEventForm() throws Exception {
         Event event = createAndSaveSingleEvent();
         mockMvc.perform(get("/events/update/{uid}", event.getUid())
