@@ -5,9 +5,9 @@
 
 <div th:replace="fragments :: header"></div>
 
-<div class="container-fluid">
+<main class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-8 mt-4">
+        <div class="col-8">
 
             <form method="post" th:action="@{/register}" th:object="${userForm}">
                 <div class="form-group">
@@ -35,9 +35,9 @@
             </form>
         </div>
     </div>
-</div>
+</main>
 
-<div th:replace="fragments :: footer"></div>
+<div th:insert="fragments :: scripts"></div>
 
 </body>
 </html>

@@ -5,7 +5,7 @@
 
 <div th:replace="fragments :: header"></div>
 
-<div class="container-fluid">
+<main class="container-fluid">
 
     <table class="table table-hover">
         <thead class="thead-light">
@@ -22,9 +22,9 @@
         </tbody>
     </table>
 
-</div>
+</main>
 
-<div th:replace="fragments :: footer"></div>
+<div th:insert="fragments :: scripts"></div>
 
 </body>
 </html>

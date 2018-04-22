@@ -5,11 +5,11 @@
 
 <div th:replace="fragments :: header"></div>
 
-<div class="container-fluid">
+<main class="container-fluid">
 
     <div class="row justify-content-center">
 
-    <form method="post" th:action="@{/login}" class="col-8 mt-4">
+    <form method="post" th:action="@{/login}" class="col-8">
         <div class="form-group">
             <label for="email">Email</label>
             <input id="email" class="form-control" name="email"/>
@@ -29,7 +29,7 @@
 
     </div>
 
-    <div th:replace="fragments :: footer"></div>
-</div>
+    <div th:insert="fragments :: scripts"></div>
+</main>
 </body>
 </html>

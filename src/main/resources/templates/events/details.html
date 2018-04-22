@@ -5,7 +5,7 @@
 
 <div th:replace="fragments :: header"></div>
 
-<div th:if="${event}" class="container-fluid">
+<main th:if="${event}" class="container-fluid">
     <h1 th:text="${event.title}"></h1>
 
     <div class="event-time-loc">
@@ -19,9 +19,9 @@
         <a class="btn btn-primary" th:href="@{${'/events/update/'+event.uid}}">
             <i class="fas fa-edit"></i> Edit</a>
     </div>
-</div>
+</main>
 
-<div th:replace="fragments :: footer"></div>
+<div th:insert="fragments :: scripts"></div>
 
 </body>
 </html>
