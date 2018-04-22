@@ -17,7 +17,7 @@
         <tbody>
             <tr th:each="event : ${events}">
                 <td th:text="${{event.startDate}}"></td>
-                <td><a th:href="@{/events/detail/+event.uid}" th:text="${event.title}"></a></td>
+                <td><a th:href="@{${'/events/detail/'+event.uid}}" th:text="${event.title}"></a></td>
             </tr>
         </tbody>
     </table>
