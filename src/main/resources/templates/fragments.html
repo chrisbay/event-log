@@ -20,6 +20,15 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">Events</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/events/create}">Create</a>
+            </li>
+        </ul>
+
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
