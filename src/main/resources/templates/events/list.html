@@ -16,7 +16,7 @@
         </thead>
         <tbody>
         <tr th:each="event : ${events}">
-            <td th:text="${event.startDate}"></td>
+            <td th:text="${{event.startDate}}"></td>
             <td th:text="${event.title}"></td>
         </tr>
         </tbody>
