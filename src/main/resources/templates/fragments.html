@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootswatch-lumen/4.0.0/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/jquery-ui/jquery-ui.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/5.0.10/web-fonts-with-css/css/fontawesome-all.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/event-log.css}"/>
 </head>
 <body>
@@ -33,10 +34,10 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
                     <form th:action="@{/logout}" method="post" name="logoutForm"></form>
-                    <a class="nav-link" href="#" onclick="document.logoutForm.submit()">Log Out</a>
+                    <a class="nav-link" href="#" onclick="document.logoutForm.submit()"><i class="fas fa-sign-out-alt"></i> Log Out</a>
                 </li>
                 <li class="nav-item" th:if="${#authorization.expression('!isAuthenticated()')}">
-                    <a class="nav-link" th:href="@{/register}">Register</a>
+                    <a class="nav-link" th:href="@{/register}"><i class="fas fa-user"></i> Register</a>
                 </li>
             </ul>
         </div>

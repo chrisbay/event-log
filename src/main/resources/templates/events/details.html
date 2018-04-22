@@ -16,7 +16,8 @@
     <p class="event-description" th:text="${event.description}"></p>
 
     <div>
-        <a class="btn btn-primary" th:href="@{${'/events/update/'+event.uid}}">Edit</a>
+        <a class="btn btn-primary" th:href="@{${'/events/update/'+event.uid}}">
+            <i class="fas fa-edit"></i> Edit</a>
     </div>
 </div>
 
