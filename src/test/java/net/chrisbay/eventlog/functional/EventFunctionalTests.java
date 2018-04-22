@@ -2,6 +2,7 @@ package net.chrisbay.eventlog.functional;
 
 import net.chrisbay.eventlog.functional.config.FunctionalTestConfig;
 import net.chrisbay.eventlog.models.Event;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,7 +20,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -134,7 +134,7 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().isOk())
                 .andExpect(xpath("//a[contains(@class,'btn') and @href='/events/update/%s']", event.getUid())
-                        .string("Edit"));
+                        .string(Matchers.containsString("Edit")));
     }
 
     @Test

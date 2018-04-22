@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,14 +25,14 @@ public class NavigationFunctionalTests extends AbstractBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().isOk())
                 .andExpect(xpath("//nav[contains(@class,'navbar')]//a[contains(@class,'nav-link') and @href='%s']", url)
-                        .string(text));
+                        .string(containsString(text)));
     }
 
     private void testLoggedOutNavbarContainsNavItem(String text, String url) throws Exception {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
                 .andExpect(xpath("//nav[contains(@class,'navbar')]//a[contains(@class,'nav-link') and @href='%s']", url)
-                        .string(text));
+                        .string(containsString(text)));
     }
 
     @Test
