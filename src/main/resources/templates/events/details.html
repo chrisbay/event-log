@@ -8,14 +8,25 @@
 <div th:replace="fragments :: messages"></div>
 
 <main th:if="${event}" class="container-fluid">
-    <h1 th:text="${event.title}"></h1>
 
-    <div class="event-time-loc">
-        <p th:text="${event.startDate}"></p>
-        <p th:text="${event.location}"></p>
-    </div>
-
-    <p class="event-description" th:text="${event.description}"></p>
+    <ul class="list-group mb-3">
+        <li class="list-group-item">
+            <h4 class="mb-1">Title</h4>
+            <p th:text="${event.title}"></p>
+        </li>
+        <li class="list-group-item">
+            <h4 class="mb-1">Date</h4>
+            <p th:text="${event.startDate}"></p>
+        </li>
+        <li class="list-group-item">
+            <h4 class="mb-1">Location</h4>
+            <p th:text="${event.location}"></p>
+        </li>
+        <li class="list-group-item">
+            <h4 class="mb-1">Description</h4>
+            <p th:text="${event.description}"></p>
+        </li>
+    </ul>
 
     <div>
         <a class="btn btn-primary" th:href="@{${'/events/update/'+event.uid}}">

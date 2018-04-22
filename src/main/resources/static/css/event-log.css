@@ -5,3 +5,6 @@ header + .container-fluid {
 main.container-fluid {
   padding-bottom: 1.5rem;
 }
+.list-group-item p {
+  margin-bottom: 0;
+}
