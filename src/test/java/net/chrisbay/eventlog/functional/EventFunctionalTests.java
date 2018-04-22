@@ -50,14 +50,13 @@ public class EventFunctionalTests extends AbstractBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(event.getTitle())))
-                .andExpect(content().string(containsString(event.getStartDate().toString())));
+                .andExpect(content().string(containsString(event.getFormattedStartDate())));
     }
 
     @Test
     public void testCanViewNewEventForm() throws Exception {
         mockMvc.perform(get("/events/create")
                 .with(user(TEST_USER_EMAIL)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Create Event")))
                 .andExpect(xpath("//form[@id='eventForm']/@method").string("post"))
