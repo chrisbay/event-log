@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
             .regexMatchers("/register").permitAll()
             .regexMatchers("/webjars/.*").permitAll()
+            .regexMatchers("/css/.*").permitAll()
             .regexMatchers("/login?[^/]*").permitAll()
             .anyRequest().authenticated()
             .and()
