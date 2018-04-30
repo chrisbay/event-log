@@ -42,7 +42,8 @@ public class VolunteerController extends AbstractBaseController {
 
     @PostMapping(value = "create")
     public String processCreateVolunteerForm(@ModelAttribute @Valid Volunteer volunteer,
-                                             Errors errors, RedirectAttributes model) {
+                                             Errors errors,
+                                             RedirectAttributes model) {
 
         if (errors.hasErrors())
             return "volunteers/create-or-update";

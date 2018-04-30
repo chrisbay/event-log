@@ -65,8 +65,7 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .param("title", "Test Event")
                 .param("description", "This event will be great!")
                 .param("startDate", "11/11/11")
-                .param("location", "")
-                .param("volunteers", ""))
+                .param("location", ""))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/events/detail/*"));
         Event event = eventRepository.findAll().get(0);
@@ -105,8 +104,7 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL))
                 .param("title", "")
                 .param("description", "Test description")
-                .param("startDate", "11/11/11")
-                .param("volunteers", ""))
+                .param("startDate", "11/11/11"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("event", "title"));
     }
@@ -118,8 +116,7 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL))
                 .param("title", "Test title")
                 .param("description", "")
-                .param("startDate", "11/11/11")
-                .param("volunteers", ""))
+                .param("startDate", "11/11/11"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("event", "description"));
     }
@@ -131,8 +128,7 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL))
                 .param("title", "Test Title")
                 .param("description", "Test description")
-                .param("startDate", "")
-                .param("volunteers", ""))
+                .param("startDate", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("event", "startDate"));
     }

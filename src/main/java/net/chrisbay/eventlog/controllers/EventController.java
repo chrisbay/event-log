@@ -49,7 +49,7 @@ public class EventController extends AbstractBaseController {
     @PostMapping(value = "create")
     public String processCreateEventForm(@Valid @ModelAttribute Event event,
                                          Errors errors,
-                                         @RequestParam("volunteers") List<Integer> volunteerUids) {
+                                         @RequestParam(name = "volunteers", required = false) List<Integer> volunteerUids) {
 
         if (errors.hasErrors())
             return "events/create-or-update";
@@ -98,7 +98,7 @@ public class EventController extends AbstractBaseController {
     public String processUpdateEventForm(@Valid @ModelAttribute Event event,
                                          RedirectAttributes model,
                                          Errors errors,
-                                         @RequestParam("volunteers") List<Integer> volunteerUids) {
+                                         @RequestParam(name = "volunteers", required = false) List<Integer> volunteerUids) {
 
         if (errors.hasErrors())
             return "events/create-or-update";
@@ -125,6 +125,10 @@ public class EventController extends AbstractBaseController {
     }
 
     private void syncVolunteerLists(List<Integer> volunteerUids, List<Volunteer> volunteers) {
+
+        if (volunteerUids == null)
+            return;
+
         List<Volunteer> newVolunteerList = volunteerRepository.findAllById(volunteerUids);
         volunteers.removeIf(v -> volunteerUids.contains(v.getUid()));
         volunteers.addAll(newVolunteerList);
