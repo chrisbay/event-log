@@ -5,8 +5,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.beans.beancontext.BeanContextMembershipEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Chris Bay
@@ -29,6 +32,8 @@ public class Event extends AbstractEntity {
     private Date startDate;
 
     private String location;
+    
+    private final List<Volunteer> volunteers = new ArrayList<>();
 
     public Event() {}
 
@@ -50,6 +55,11 @@ public class Event extends AbstractEntity {
         this.description = description;
         this.startDate = startDate;
         this.location = location;
+    }
+
+    public Event(String title, String description, Date startDate, String location, List<Volunteer> volunteers) {
+        this(title, description, startDate, location);
+        this.addAllVolunteers(volunteers);
     }
 
     public String getTitle() {
@@ -94,5 +104,17 @@ public class Event extends AbstractEntity {
                 "title='" + title + '\'' +
                 ", startDate=" + startDate +
                 '}';
+    }
+
+    public List<Volunteer> getVolunteers() {
+        return this.volunteers;
+    }
+
+    public void addVolunteer(Volunteer vol) {
+        this.volunteers.add(vol);
+    }
+
+    private void addAllVolunteers(List<Volunteer> vols) {
+        this.volunteers.addAll(vols);
     }
 }
