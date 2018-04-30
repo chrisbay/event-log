@@ -10,6 +10,12 @@
 <main class="container-fluid">
 
     <div class="row">
+        <div class="col">
+            <a th:href="@{/volunteers/create}" class="btn btn-success">Create Volunteer</a>
+        </div>
+    </div>
+
+    <div class="row">
         <ul class="col">
             <li th:each="volunteer : ${volunteers}"
                 th:text="${volunteer.firstName + ' ' + volunteer.lastName}"></li>

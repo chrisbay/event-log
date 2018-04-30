@@ -46,4 +46,12 @@ public class VolunteerFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(content().string(containsString("First Last")));
     }
+
+    @Test
+    public void testCanViewAddVolunteerButtonOnVolunteerListing() throws Exception {
+        mockMvc.perform(get("/volunteers")
+                .with(user(TEST_USER_EMAIL)))
+                .andExpect(status().isOk())
+                .andExpect(xpath("//a[@href='/volunteers/create']").string(containsString("Create Volunteer")));
+    }
 }
