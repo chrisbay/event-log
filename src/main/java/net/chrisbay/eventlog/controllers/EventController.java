@@ -94,4 +94,18 @@ public class EventController extends AbstractBaseController {
         return "redirect:/events/detail/" + event.getUid();
     }
 
+    @PostMapping(value = "delete/{uid}")
+    public String processDeleteEventForm(@PathVariable int uid, RedirectAttributes model) {
+
+        Optional<Event> result = eventRepository.findById(uid);
+        if (result.isPresent()) {
+            eventRepository.delete(result.get());
+            model.addFlashAttribute(MESSAGE_KEY, "success|Event deleted");
+            return "redirect:/events";
+        } else {
+            model.addFlashAttribute(MESSAGE_KEY, "danger|Event with ID does not exist: " +  uid);
+            return "redirect:/events";
+        }
+    }
+
 }

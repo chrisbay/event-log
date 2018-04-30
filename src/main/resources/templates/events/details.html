@@ -32,6 +32,12 @@
         <a class="btn btn-primary" th:href="@{${'/events/update/'+event.uid}}">
             <i class="fas fa-edit"></i> Edit</a>
     </div>
+
+    <form th:action="@{${'/events/delete/'+event.uid}}" method="post">
+        <button class="btn btn-danger">
+            <i class="fas fa-edit"></i> Delete</button>
+    </form>
+
 </main>
 
 <div th:insert="fragments :: scripts"></div>

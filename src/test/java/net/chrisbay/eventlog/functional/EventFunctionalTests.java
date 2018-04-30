@@ -16,6 +16,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.text.StringContainsInOrder.stringContainsInOrder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -176,6 +177,30 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
         assertTrue(updatedEventRes.isPresent());
         Event updatedEvent = updatedEventRes.get();
         assertEquals(newTitle, updatedEvent.getTitle());
+    }
+
+    @Test
+    public void testEventDetailPageContainsDeleteButton() throws Exception {
+        Event event = createAndSaveSingleEvent();
+        mockMvc.perform(get("/events/detail/{uid}", event.getUid())
+                .with(user(TEST_USER_EMAIL)))
+                .andExpect(status().isOk())
+                .andExpect(xpath("//form[@method='post' and @action='/events/delete/%s']", event.getUid())
+                    .exists())
+                .andExpect(xpath("//form//button")
+                        .string(Matchers.containsString("Delete")));
+    }
+
+    @Test
+    public void testCanDeleteEvent() throws Exception {
+        Event event = createAndSaveSingleEvent();
+        mockMvc.perform(post("/events/delete/{uid}", event.getUid())
+                .with(user(TEST_USER_EMAIL))
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", "/events"));
+        Optional<Event> updatedEventRes = eventRepository.findById(event.getUid());
+        assertFalse(updatedEventRes.isPresent());
     }
 
 }
