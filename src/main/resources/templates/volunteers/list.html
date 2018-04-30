@@ -18,7 +18,7 @@
     <div class="row">
         <ul class="col">
             <li th:each="volunteer : ${volunteers}"
-                th:text="${volunteer.firstName + ' ' + volunteer.lastName}"></li>
+                th:text="${volunteer.fullName}"></li>
         </ul>
     </div>
 

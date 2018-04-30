@@ -41,7 +41,7 @@ public class VolunteerFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .param("firstName", "First")
                 .param("lastName", "Last"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("volunteers"));
+                .andExpect(redirectedUrl("/volunteers"));
         mockMvc.perform(get("/volunteers")
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(content().string(containsString("First Last")));

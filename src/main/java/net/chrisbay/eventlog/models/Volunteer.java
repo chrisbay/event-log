@@ -45,4 +45,8 @@ public class Volunteer extends AbstractEntity {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
 }

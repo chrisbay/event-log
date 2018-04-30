@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -19,7 +20,7 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping(value = "volunteers")
-public class VolunteerController {
+public class VolunteerController extends AbstractBaseController {
 
     @Autowired
     VolunteerRepository volunteerRepository;
@@ -40,13 +41,15 @@ public class VolunteerController {
     }
 
     @PostMapping(value = "create")
-    public String processCreateVolunteerForm(@ModelAttribute @Valid Volunteer volunteer, Errors errors) {
+    public String processCreateVolunteerForm(@ModelAttribute @Valid Volunteer volunteer,
+                                             Errors errors, RedirectAttributes model) {
 
         if (errors.hasErrors())
-            return "events/create-or-update";
+            return "volunteers/create-or-update";
 
         volunteerRepository.save(volunteer);
+        model.addFlashAttribute(MESSAGE_KEY, "success|New volunteer added: " + volunteer.getFullName());
 
-        return "redirect:volunteers";
+        return "redirect:/volunteers";
     }
 }
