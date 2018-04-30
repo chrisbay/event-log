@@ -19,6 +19,13 @@ public class Volunteer extends AbstractEntity {
 
     public Volunteer(@Size(min = 3, message = "Volunteer names must be at least 3 characters long") String firstName,
                      @Size(min = 3, message = "Volunteer names must be at least 3 characters long") String lastName) {
+
+        if (firstName.length() < 3)
+            throw new IllegalArgumentException("Volunteer names must be at least 3 characters long");
+
+        if (lastName.length() < 3)
+            throw new IllegalArgumentException("Volunteer names must be at least 3 characters long");
+
         this.firstName = firstName;
         this.lastName = lastName;
     }
