@@ -33,6 +33,16 @@
                     <textarea type="textarea" rows="3" th:errorclass="is-invalid" class="form-control" th:field="*{description}" required="required"></textarea>
                     <div class="invalid-feedback" th:errors="*{description}"></div>
                 </div>
+                <div class="form-group">
+                    <label for="volunteers">Volunteers</label>
+                    <select name="volunteers" id="volunteers" class="form-control" multiple="multiple">
+                        <option th:each="volunteer : ${volunteers}"
+                                th:value="${volunteer.uid}"
+                                th:text="${volunteer.fullName}"
+                                th:selected="${event.volunteers.contains(volunteer)}"></option>
+                    </select>
+                    <div class="invalid-feedback" th:errors="*{volunteers}"></div>
+                </div>
                 <input type="submit" value="Save" class="btn btn-primary" />
             </form>
         </div>

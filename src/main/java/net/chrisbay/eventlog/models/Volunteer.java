@@ -1,7 +1,9 @@
 package net.chrisbay.eventlog.models;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * Created by Chris Bay
@@ -14,6 +16,9 @@ public class Volunteer extends AbstractEntity {
 
     @Size(min = 3, message = "Volunteer names must be at least 3 characters long")
     private String lastName;
+
+    @ManyToMany(mappedBy = "volunteers")
+    private List<Event> events;
 
     public Volunteer() {}
 

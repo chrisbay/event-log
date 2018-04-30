@@ -3,13 +3,14 @@ package net.chrisbay.eventlog.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.beans.beancontext.BeanContextMembershipEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Chris Bay
@@ -32,7 +33,8 @@ public class Event extends AbstractEntity {
     private Date startDate;
 
     private String location;
-    
+
+    @ManyToMany
     private final List<Volunteer> volunteers = new ArrayList<>();
 
     public Event() {}
@@ -114,7 +116,12 @@ public class Event extends AbstractEntity {
         this.volunteers.add(vol);
     }
 
-    private void addAllVolunteers(List<Volunteer> vols) {
+    public void addAllVolunteers(List<Volunteer> vols) {
         this.volunteers.addAll(vols);
+    }
+
+    public String getVolunteersFormatted() {
+        List<String> nameList = this.getVolunteers().stream().map(Volunteer::getFullName).collect(Collectors.toList());
+        return String.join(", ", nameList);
     }
 }

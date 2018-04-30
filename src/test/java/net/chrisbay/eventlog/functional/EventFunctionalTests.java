@@ -17,6 +17,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.text.StringContainsInOrder.stringContainsInOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -52,7 +53,8 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .andExpect(xpath("//form//input[@name='title']").exists())
                 .andExpect(xpath("//form//input[@name='startDate']").exists())
                 .andExpect(xpath("//form//textarea[@name='description']").exists())
-                .andExpect(xpath("//form//input[@name='location']").exists());
+                .andExpect(xpath("//form//input[@name='location']").exists())
+                .andExpect(xpath("//form//select[@name='volunteers']").exists());
     }
 
     @Test
@@ -63,9 +65,12 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .param("title", "Test Event")
                 .param("description", "This event will be great!")
                 .param("startDate", "11/11/11")
-                .param("location", ""))
+                .param("location", "")
+                .param("volunteers", ""))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/events/detail/*"));
+        Event event = eventRepository.findAll().get(0);
+        assertNotNull(event);
     }
 
     @Test
@@ -75,7 +80,8 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 event.getTitle(),
                 event.getFormattedStartDate(),
                 event.getLocation(),
-                event.getDescription()
+                event.getDescription(),
+                event.getVolunteersFormatted()
         );
         mockMvc.perform(get("/events/detail/{uid}", event.getUid())
                 .with(user(TEST_USER_EMAIL)))
@@ -99,7 +105,8 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL))
                 .param("title", "")
                 .param("description", "Test description")
-                .param("startDate", "11/11/11"))
+                .param("startDate", "11/11/11")
+                .param("volunteers", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("event", "title"));
     }
@@ -111,7 +118,8 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL))
                 .param("title", "Test title")
                 .param("description", "")
-                .param("startDate", "11/11/11"))
+                .param("startDate", "11/11/11")
+                .param("volunteers", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("event", "description"));
     }
@@ -123,7 +131,8 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .with(user(TEST_USER_EMAIL))
                 .param("title", "Test Title")
                 .param("description", "Test description")
-                .param("startDate", ""))
+                .param("startDate", "")
+                .param("volunteers", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("event", "startDate"));
     }
@@ -170,7 +179,8 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
                 .param("title", newTitle)
                 .param("description", event.getDescription())
                 .param("startDate", event.getFormattedStartDate())
-                .param("location", event.getLocation()))
+                .param("location", event.getLocation())
+                .param("volunteers", ""))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/events/detail/"+event.getUid()));
         Optional<Event> updatedEventRes = eventRepository.findById(event.getUid());
@@ -202,5 +212,6 @@ public class EventFunctionalTests extends AbstractEventBaseFunctionalTest {
         Optional<Event> updatedEventRes = eventRepository.findById(event.getUid());
         assertFalse(updatedEventRes.isPresent());
     }
+
 
 }
