@@ -9,34 +9,39 @@
 
 <main th:if="${event}" class="container-fluid">
 
-    <ul class="list-group mb-3">
-        <li class="list-group-item">
-            <h4 class="mb-1">Title</h4>
-            <p th:text="${event.title}"></p>
-        </li>
-        <li class="list-group-item">
-            <h4 class="mb-1">Date</h4>
-            <p th:text="${{event.startDate}}"></p>
-        </li>
-        <li class="list-group-item">
-            <h4 class="mb-1">Location</h4>
-            <p th:text="${event.location}"></p>
-        </li>
-        <li class="list-group-item">
-            <h4 class="mb-1">Description</h4>
-            <p th:text="${event.description}"></p>
-        </li>
-    </ul>
-
-    <div>
-        <a class="btn btn-primary" th:href="@{${'/events/update/'+event.uid}}">
-            <i class="fas fa-edit"></i> Edit</a>
+    <div class="row">
+        <div class="col">
+            <ul class="list-group mb-3">
+                <li class="list-group-item">
+                    <h4 class="mb-1">Title</h4>
+                    <p th:text="${event.title}"></p>
+                </li>
+                <li class="list-group-item">
+                    <h4 class="mb-1">Date</h4>
+                    <p th:text="${{event.startDate}}"></p>
+                </li>
+                <li class="list-group-item">
+                    <h4 class="mb-1">Location</h4>
+                    <p th:text="${event.location}"></p>
+                </li>
+                <li class="list-group-item">
+                    <h4 class="mb-1">Description</h4>
+                    <p th:text="${event.description}"></p>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <form th:action="@{${'/events/delete/'+event.uid}}" method="post">
-        <button class="btn btn-danger">
-            <i class="fas fa-edit"></i> Delete</button>
-    </form>
+    <div class="row">
+        <div class="col-1">
+            <a class="btn btn-primary" th:href="@{${'/events/update/'+event.uid}}">
+                <i class="fas fa-edit"></i> Edit</a>
+        </div>
+        <form th:action="@{${'/events/delete/'+event.uid}}" class="col text-right" method="post">
+            <button class="btn btn-danger">
+                <i class="fas fa-edit"></i> Delete</button>
+        </form>
+    </div>
 
 </main>
 
