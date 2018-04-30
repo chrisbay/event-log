@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+<body>
+
+<div th:replace="fragments :: header"></div>
+
+<div th:replace="fragments :: messages"></div>
+
+<main class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-8">
+
+            <form id="volunteerForm" method="post" th:action="${actionUrl}" th:object="${volunteer}">
+                <input type="hidden" th:field="*{uid}" />
+                <div class="form-group">
+                    <label th:for="firstName">First Name</label>
+                    <input th:errorclass="is-invalid" class="form-control" th:field="*{firstName}" required="required" />
+                    <div class="invalid-feedback" th:errors="*{firstName}"></div>
+                </div>
+                <div class="form-group">
+                    <label th:for="lastName">Last Name</label>
+                    <input th:errorclass="is-invalid" class="form-control" th:field="*{lastName}" required="required" />
+                    <div class="invalid-feedback" th:errors="*{lastName}"></div>
+                </div>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </form>
+        </div>
+    </div>
+</main>
+
+<div th:insert="fragments :: scripts"></div>
+
+</body>
+</html>

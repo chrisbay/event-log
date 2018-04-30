@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+<body>
+
+<div th:replace="fragments :: header"></div>
+
+<div th:replace="fragments :: messages"></div>
+
+<main class="container-fluid">
+
+    <div class="row">
+        <ul class="col">
+            <li th:each="volunteer : ${volunteers}"
+                th:text="${volunteer.firstName + ' ' + volunteer.lastName}"></li>
+        </ul>
+    </div>
+
+</main>
+
+<div th:insert="fragments :: scripts"></div>
+
+</body>
+</html>
