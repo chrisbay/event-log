@@ -9,20 +9,30 @@
 
 <main class="container-fluid">
 
-    <table class="table table-hover">
-        <thead class="thead-light">
-            <tr>
-                <th>Date</th>
-                <th>Event</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="event : ${events}">
-                <td th:text="${{event.startDate}}"></td>
-                <td><a th:href="@{${'/events/detail/'+event.uid}}" th:text="${event.title}"></a></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col">
+            <a th:href="@{/events/create}" class="btn btn-success mb-3">Create Event</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Event</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="event : ${events}">
+                        <td th:text="${{event.startDate}}"></td>
+                        <td><a th:href="@{${'/events/detail/'+event.uid}}" th:text="${event.title}"></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </main>
 

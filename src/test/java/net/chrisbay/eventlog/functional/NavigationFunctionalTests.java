@@ -46,11 +46,6 @@ public class NavigationFunctionalTests extends AbstractBaseFunctionalTest {
     }
 
     @Test
-    public void testLoggedInNavbarLinksToCreateForm() throws Exception {
-        testLoggedInNavbarContainsNavItem("Create", "/events/create");
-    }
-
-    @Test
     public void testLoggedInNavbarLinksToLogout() throws Exception {
         testLoggedInNavbarContainsNavItem("Log Out", "#");
     }

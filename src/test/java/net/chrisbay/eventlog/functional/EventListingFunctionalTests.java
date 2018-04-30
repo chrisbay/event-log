@@ -6,8 +6,10 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 /**
@@ -26,6 +28,14 @@ public class EventListingFunctionalTests extends AbstractEventBaseFunctionalTest
                 .with(user(TEST_USER_EMAIL)))
                 .andExpect(xpath("//tbody//tr//a[starts-with(@href,'/events/detail/')]")
                         .nodeCount(numberOfEvents));
+    }
+
+    @Test
+    public void testCanViewAddEventButtonOnVolunteerListing() throws Exception {
+        mockMvc.perform(get("/events")
+                .with(user(TEST_USER_EMAIL)))
+                .andExpect(status().isOk())
+                .andExpect(xpath("//a[@href='/events/create']").string(containsString("Create Event")));
     }
 
 }
