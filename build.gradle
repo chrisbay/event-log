@@ -35,6 +35,7 @@ dependencies {
 	compile('org.webjars:webjars-locator:0.33')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
+	compile('org.flywaydb:flyway-core')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('mysql:mysql-connector-java')
 	testCompile('com.h2database:h2')

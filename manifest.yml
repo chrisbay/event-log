@@ -1,0 +1,6 @@
+applications:
+- name: event-log
+  buildpack: java_buildpack
+  path: build/libs/event-log-0.0.1-SNAPSHOT.jar
+  services:
+    - event-log-db
